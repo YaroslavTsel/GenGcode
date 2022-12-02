@@ -55,13 +55,13 @@ namespace GenGcode
                if (entity.GetType() == typeof(Polyline))
                {
                   Polyline polyline = entity as Polyline;
-                  output = GetGcode(polyline, speed * 10, power);
+                  output = GetGcode(polyline, speed, power* 10);
                }
 
                if (entity.GetType() == typeof(Circle))
                {
                   Circle circle = entity as Circle;
-                  output = GetGcode(circle, speed * 10, power);
+                  output = GetGcode(circle, speed , power* 10);
                }
 
                for (int i = 0; i < repeat; i++)
@@ -81,7 +81,7 @@ namespace GenGcode
             tr.Commit();
          }
 
-         SaveGcode(gcode);
+         SaveGcode(_totalGCode);
       }
 
       public static bool ReadLayerParams(out int speed, out int power, out int repeat, Dictionary<string, string> props, string layerName)
