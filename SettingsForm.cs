@@ -91,7 +91,7 @@ namespace GenGcode
 
       private void button2_Click(object sender, EventArgs e)
       {
-         var records = _db.SummaryInfo.CustomProperties;
+         DeleteCustomPropertys(_db);
 
          string cutProp = $"{SpeedUD1.Value};{PowerUD1.Value};{RepeatUD1.Value}";
          string engraveProp1 = $"{SpeedUD2.Value};{PowerUD2.Value};{RepeatUD2.Value}";
@@ -130,6 +130,13 @@ namespace GenGcode
             custProps[key] = value;
          else
             custProps.Add(key, value);
+         db.SummaryInfo = infoBuilder.ToDatabaseSummaryInfo();
+      }
+      public static void DeleteCustomPropertys(Database db)
+      {
+         DatabaseSummaryInfoBuilder infoBuilder = new DatabaseSummaryInfoBuilder(db.SummaryInfo);
+         var custProps = infoBuilder.CustomPropertyTable;
+         custProps.Clear();
          db.SummaryInfo = infoBuilder.ToDatabaseSummaryInfo();
       }
 

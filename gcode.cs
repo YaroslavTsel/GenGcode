@@ -12,7 +12,7 @@ namespace GenGcode
       private bool _first = true;
       private int _speed, _power;
 
-      private double minX, minY, maxX, maxY;
+      public static double minX, minY, maxX, maxY;
 
       public List<string> OutGcode
       {
@@ -26,9 +26,10 @@ namespace GenGcode
       public Gcode(int speed, int power)
       {
          _speed = speed;
-         _power = power;
-
+         _power = power; 
          _outGCode.Add("M3 S0");
+
+         
       }
 
       public void addLine(LineSegment2d line)

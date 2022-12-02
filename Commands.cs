@@ -12,6 +12,7 @@ namespace GenGcode
 {
    public class Commands : IExtensionApplication
    {
+      List<string> _totalGCode = new List<string>();
       // функция инициализации (выполняется при загрузке плагина)
       public void Initialize()
       {
@@ -69,6 +70,14 @@ namespace GenGcode
                }
             }
 
+            //Walk perimeter
+
+            _totalGCode.Add($"G0X{Gcode.minX}Y{Gcode.minY}");
+            _totalGCode.Add($"G0X{Gcode.minX}Y{Gcode.maxY}");
+            _totalGCode.Add($"G0X{Gcode.maxX}Y{Gcode.maxY}");
+            _totalGCode.Add($"G0X{Gcode.maxX}Y{Gcode.minY}");
+            _totalGCode.AddRange(gcode);
+
             tr.Commit();
          }
 
@@ -101,10 +110,7 @@ namespace GenGcode
          }
       }
 
-      public void OpenSettingsForm(Database db)
-      {
-      }
-
+  
       public static Dictionary<string, string> ReadCustomProp(Database db)
       {
          var records = db.SummaryInfo.CustomProperties;
