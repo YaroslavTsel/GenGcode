@@ -3,7 +3,7 @@
 I have a laser cutter/engraver, and one of the most annoying thing was all these file conversions: from dwg to pdf (OMG!), from pdf to svg, from svg to gcode.
 Ofcourse, I know about free online converters, but they work unstable. So, I decided to write my own Autocad plugin to do it easy and fast.
 ## How to use
-At first prepare your drawing in Autocad place it on different layers for cut and engrave. You can define up to 4 layers.
+At first prepare your drawing in Autocad. Convert everything to polylines and circles (you can use "_pedit" command to do it), place it on different layers for cut and engrave. You can define up to 4 layers.
 <img src="https://user-images.githubusercontent.com/119655739/205248321-e6b5cce8-4112-4670-8d73-c599d305eede.png" alt="drawing" width="350"/>
 
 Then type "NETLOAD" in Autocad and load the "GenGcode.dll". You can see mini instruction on pop-up window. 
