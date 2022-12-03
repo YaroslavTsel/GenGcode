@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
-
+using System.Linq;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Geometry;
@@ -12,30 +12,30 @@ namespace GenGcode
 {
    public class Commands : IExtensionApplication
    {
-      List<string> _totalGCode = new List<string>();
-      // функция инициализации (выполняется при загрузке плагина)
+      List<string> _totalGCode;
+
       public void Initialize()
       {
          MessageBox.Show("GenGcode loaded. \r\n Type \"GETGCODE\" to run \r\n  or \"SETGCODE\" to setup");
-         // получаем текущую БД
+
       }
 
-      // эта функция будет вызываться при выполнении в AutoCAD команды «TestCommand»
       [CommandMethod("GETGCODE")]
       public void GetGcode()
       {
+         _totalGCode = new List<string>();
+
          List<string> gcode = new List<string>();
          int speed = 1000;
          int power = 1000;
          int repeat = 1;
 
          Database db = HostApplicationServices.WorkingDatabase;
-         Dictionary<string, string> props = ReadCustomProp(db);
+         SortedDictionary<string, string> props = ReadCustomProp(db);
 
-         // начинаем транзакцию
+
          using (Transaction tr = db.TransactionManager.StartTransaction())
          {
-            // получаем ссылку на пространство модели (ModelSpace)
             BlockTableRecord ms = (BlockTableRecord)tr.GetObject(SymbolUtilityServices.GetBlockModelSpaceId(db), OpenMode.ForRead);
 
             foreach (ObjectId id in ms)
@@ -66,9 +66,13 @@ namespace GenGcode
 
                for (int i = 0; i < repeat; i++)
                {
+                  gcode.Add($";{entity.GetType().ToString().Split('.').Last()} on layer  {entity.Layer}, pass {i + 1}");
                   gcode.AddRange(output);
                }
             }
+
+            _totalGCode.Add(";This gcode was genrated by GenGcode Autocad plugin");
+            _totalGCode.Add(";Latest version of the plugin you can get on https://github.com/YaroslavTsel/GenGcode");
 
             //Walk perimeter
 
@@ -76,6 +80,7 @@ namespace GenGcode
             _totalGCode.Add($"G0X{Gcode.minX}Y{Gcode.maxY}");
             _totalGCode.Add($"G0X{Gcode.maxX}Y{Gcode.maxY}");
             _totalGCode.Add($"G0X{Gcode.maxX}Y{Gcode.minY}");
+
             _totalGCode.AddRange(gcode);
 
             tr.Commit();
@@ -84,7 +89,7 @@ namespace GenGcode
          SaveGcode(_totalGCode);
       }
 
-      public static bool ReadLayerParams(out int speed, out int power, out int repeat, Dictionary<string, string> props, string layerName)
+      public static bool ReadLayerParams(out int speed, out int power, out int repeat, SortedDictionary<string, string> props, string layerName)
       {
          if (props.ContainsKey(layerName))
          {
@@ -111,18 +116,20 @@ namespace GenGcode
       }
 
   
-      public static Dictionary<string, string> ReadCustomProp(Database db)
+      public static SortedDictionary<string, string> ReadCustomProp(Database db)
       {
          var records = db.SummaryInfo.CustomProperties;
 
-         Dictionary<string, string> custumProp = new Dictionary<string, string>();
+         SortedDictionary<string, string> customProp = new SortedDictionary<string, string>();
 
          while (records.MoveNext())
          {
-            custumProp.Add(records.Key.ToString(), records.Value.ToString());
+            customProp.Add(records.Key.ToString(), records.Value.ToString());
          }
 
-         return custumProp;
+       
+
+         return customProp;
       }
 
       private static List<string> GetGcode(Polyline polyline, int speed, int power)
@@ -171,7 +178,6 @@ namespace GenGcode
          if (saveFileDialog.ShowDialog() == DialogResult.Cancel)
             return;
 
-         // получаем выбранный файл
          string filename = saveFileDialog.FileName;
 
          FileStream fs = new FileStream(@filename, FileMode.Create);
@@ -193,7 +199,6 @@ namespace GenGcode
          }
       }
 
-      // функция, выполняемая при выгрузке плагина
       public void Terminate()
       {
       }
