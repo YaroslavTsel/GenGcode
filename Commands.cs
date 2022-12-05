@@ -24,6 +24,12 @@ namespace GenGcode
       public void GetGcode()
       {
          _totalGCode = new List<string>();
+         Gcode.maxX = 0;
+         Gcode.maxY = 0;
+         Gcode.minX = 0;
+         Gcode.minY = 0;
+
+
 
          List<string> gcode = new List<string>();
          int speed = 1000;
