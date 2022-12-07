@@ -7,6 +7,7 @@ using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.Runtime;
+using Autodesk.AutoCAD.EditorInput;
 
 namespace GenGcode
 {
@@ -20,7 +21,8 @@ namespace GenGcode
 
       }
 
-      [CommandMethod("GETGCODE")]
+      [CommandMethod("GETGCODE",CommandFlags.UsePickSet)]
+
       public void GetGcode()
       {
          _totalGCode = new List<string>();
@@ -28,9 +30,7 @@ namespace GenGcode
          Gcode.maxY = 0;
          Gcode.minX = 0;
          Gcode.minY = 0;
-
-
-
+         bool selected = true;
          List<string> gcode = new List<string>();
          int speed = 1000;
          int power = 1000;
@@ -39,12 +39,22 @@ namespace GenGcode
          Database db = HostApplicationServices.WorkingDatabase;
          SortedDictionary<string, string> props = ReadCustomProp(db);
 
+         List<ObjectId> elements = GetSelectedElements();
 
          using (Transaction tr = db.TransactionManager.StartTransaction())
          {
-            BlockTableRecord ms = (BlockTableRecord)tr.GetObject(SymbolUtilityServices.GetBlockModelSpaceId(db), OpenMode.ForRead);
-
-            foreach (ObjectId id in ms)
+            if (elements == null)
+            {
+               elements = new List<ObjectId>();
+               selected =false;
+               BlockTableRecord ms = (BlockTableRecord)tr.GetObject(SymbolUtilityServices.GetBlockModelSpaceId(db), OpenMode.ForRead);
+               foreach (ObjectId id in ms)
+               {
+                  elements.Add(id);
+               }
+            }
+            
+            foreach (ObjectId id in elements)
             {
                List<string> output = new List<string>();
 
@@ -61,13 +71,13 @@ namespace GenGcode
                if (entity.GetType() == typeof(Polyline))
                {
                   Polyline polyline = entity as Polyline;
-                  output = GetGcode(polyline, speed, power* 10);
+                  output = GetGcode(polyline, speed, power * 10);
                }
 
                if (entity.GetType() == typeof(Circle))
                {
                   Circle circle = entity as Circle;
-                  output = GetGcode(circle, speed , power* 10);
+                  output = GetGcode(circle, speed, power * 10);
                }
 
                for (int i = 0; i < repeat; i++)
@@ -92,7 +102,15 @@ namespace GenGcode
             tr.Commit();
          }
 
-         SaveGcode(_totalGCode);
+         SaveGcode(_totalGCode,selected);
+      }
+
+
+      private static List<ObjectId> GetSelectedElements()
+      {
+         Editor ed = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor;
+         var  sel = ed.SelectImplied().Value;
+         return sel?.GetObjectIds()?.ToList();
       }
 
       public static bool ReadLayerParams(out int speed, out int power, out int repeat, SortedDictionary<string, string> props, string layerName)
@@ -172,15 +190,16 @@ namespace GenGcode
          return circleGcode.OutGcode;
       }
 
-      private static void SaveGcode(List<string> gcode)
+      private static void SaveGcode(List<string> gcode, bool selected)
       {
+         string suffix = selected ? "_Selected" : "_All";
          Document doc = Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
          string drawingName = System.IO.Path.GetFileName(doc.Name).Split('.')[0];
-
+         
          SaveFileDialog saveFileDialog = new SaveFileDialog();
          saveFileDialog.Filter = "GCODE files(*.nc)|*.nc|All files(*.*)|*.*";
 
-         saveFileDialog.FileName = drawingName + ".nc";
+         saveFileDialog.FileName = drawingName + suffix + ".nc";
          if (saveFileDialog.ShowDialog() == DialogResult.Cancel)
             return;
 
