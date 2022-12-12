@@ -37,19 +37,19 @@ namespace GenGcode
 
          int comboCount = 1;
 
-         foreach (var layerName in layersArray)
+
+         foreach (var prop in props)
          {
-            int speed, power, repeat;
-
-            if (Commands.ReadLayerParams(out speed, out power, out repeat, props, layerName))
-            {
-               comboCount = fillNextCombo( layerName, speed, power, repeat);
-            }
-
+            comboCount = fillNextCombo(prop);
          }
 
-         int fillNextCombo(string layerName, int speed, int power, int repeat)
+         int fillNextCombo(KeyValuePair<string,string> prop)
          {
+            string layerName;
+            int speed, power, repeat;
+
+            DecodeProp(prop, out layerName, out speed, out power, out repeat);
+
             switch (comboCount)
             {
                case 1:
@@ -127,9 +127,15 @@ namespace GenGcode
 
       }
 
+      public static void DecodeProp(KeyValuePair<string, string> prop, out string layerName, out int speed, out int power, out int repeat)
+      {
+         var values = prop.Value.Split(';');
 
-
-
+         layerName = values[0];
+         speed = Convert.ToInt32(values[1]);
+         power = Convert.ToInt32(values[2]);
+         repeat = Convert.ToInt32(values[3]);
+      }
 
       private void InfoBtn_Click(object sender, EventArgs e)
       {
@@ -150,27 +156,27 @@ namespace GenGcode
 
          void CombinePropStrings()
          {
-            engraveProp1 = $"{SpeedUD1.Value};{PowerUD1.Value};{RepeatUD1.Value}";
-            engraveProp2 = $"{SpeedUD2.Value};{PowerUD2.Value};{RepeatUD2.Value}";
-            engraveProp3 = $"{SpeedUD3.Value};{PowerUD3.Value};{RepeatUD3.Value}";
-            engraveProp4 = $"{SpeedUD4.Value};{PowerUD4.Value};{RepeatUD4.Value}";
-            engraveProp5 = $"{SpeedUD5.Value};{PowerUD5.Value};{RepeatUD5.Value}";
-            engraveProp6 = $"{SpeedUD6.Value};{PowerUD6.Value};{RepeatUD6.Value}";
-            engraveProp7 = $"{SpeedUD7.Value};{PowerUD7.Value};{RepeatUD7.Value}";
-            engraveProp8 = $"{SpeedUD8.Value};{PowerUD8.Value};{RepeatUD8.Value}";
+            engraveProp1 = $"{comboBox1.Text};{SpeedUD1.Value};{PowerUD1.Value};{RepeatUD1.Value}";
+            engraveProp2 = $"{comboBox2.Text};{SpeedUD2.Value};{PowerUD2.Value};{RepeatUD2.Value}";
+            engraveProp3 = $"{comboBox3.Text};{SpeedUD3.Value};{PowerUD3.Value};{RepeatUD3.Value}";
+            engraveProp4 = $"{comboBox4.Text};{SpeedUD4.Value};{PowerUD4.Value};{RepeatUD4.Value}";
+            engraveProp5 = $"{comboBox5.Text};{SpeedUD5.Value};{PowerUD5.Value};{RepeatUD5.Value}";
+            engraveProp6 = $"{comboBox6.Text};{SpeedUD6.Value};{PowerUD6.Value};{RepeatUD6.Value}";
+            engraveProp7 = $"{comboBox7.Text};{SpeedUD7.Value};{PowerUD7.Value};{RepeatUD7.Value}";
+            engraveProp8 = $"{comboBox8.Text};{SpeedUD8.Value};{PowerUD8.Value};{RepeatUD8.Value}";
          }
 
          void SaveToCustomProp()
          {
-            if (comboBox1.Text != "") SetCustomProperty(_db, comboBox1.Text, engraveProp1);
-            if (comboBox2.Text != "") SetCustomProperty(_db, comboBox2.Text, engraveProp2);
-            if (comboBox3.Text != "") SetCustomProperty(_db, comboBox3.Text, engraveProp3);
-            if (comboBox4.Text != "") SetCustomProperty(_db, comboBox4.Text, engraveProp4);
+            if (comboBox1.Text != "") SetCustomProperty(_db, "EngraveProp1", engraveProp1);
+            if (comboBox2.Text != "") SetCustomProperty(_db, "EngraveProp2", engraveProp2);
+            if (comboBox3.Text != "") SetCustomProperty(_db, "EngraveProp3", engraveProp3);
+            if (comboBox4.Text != "") SetCustomProperty(_db, "EngraveProp4", engraveProp4);
 
-            if (comboBox5.Text != "") SetCustomProperty(_db, comboBox5.Text, engraveProp5);
-            if (comboBox6.Text != "") SetCustomProperty(_db, comboBox6.Text, engraveProp6);
-            if (comboBox7.Text != "") SetCustomProperty(_db, comboBox7.Text, engraveProp7);
-            if (comboBox8.Text != "") SetCustomProperty(_db, comboBox8.Text, engraveProp8);
+            if (comboBox5.Text != "") SetCustomProperty(_db, "EngraveProp5", engraveProp5);
+            if (comboBox6.Text != "") SetCustomProperty(_db, "EngraveProp6", engraveProp6);
+            if (comboBox7.Text != "") SetCustomProperty(_db, "EngraveProp7", engraveProp7);
+            if (comboBox8.Text != "") SetCustomProperty(_db, "EngraveProp8", engraveProp8);
          }
       }
 
@@ -209,5 +215,9 @@ namespace GenGcode
          db.SummaryInfo = infoBuilder.ToDatabaseSummaryInfo();
       }
 
+      private void label6_Click(object sender, EventArgs e)
+      {
+
+      }
    }
 }

@@ -46,47 +46,52 @@ namespace GenGcode
             if (elements == null)
             {
                elements = new List<ObjectId>();
-               selected =false;
+               selected = false;
                BlockTableRecord ms = (BlockTableRecord)tr.GetObject(SymbolUtilityServices.GetBlockModelSpaceId(db), OpenMode.ForRead);
                foreach (ObjectId id in ms)
                {
                   elements.Add(id);
                }
             }
-            
-            foreach (ObjectId id in elements)
+
+           var entryByLayerDict =  EntryByLayer(tr);
+
+            foreach (var prop in props)
             {
-               List<string> output = new List<string>();
 
-               Entity entity = (Entity)tr.GetObject(id, OpenMode.ForRead);
+              string  layerName = prop.Value.Split(';')[0];
 
-               if (!props.ContainsKey(entity.Layer))
+               foreach (Entity entity in entryByLayerDict[layerName])
                {
-                  SetGcode();
-                  props = ReadCustomProp(db);
+                  List<string> output = new List<string>();
+
+                  if (!ReadLayerParams(out speed, out power, out repeat, props, entity.Layer))
+                  {
+                     SetGcode();
+                     props = ReadCustomProp(db);
+                  }
+                                   
+
+                  if (entity.GetType() == typeof(Polyline))
+                  {
+                     Polyline polyline = entity as Polyline;
+                     output = GetGcode(polyline, speed, power * 10);
+                  }
+
+                  if (entity.GetType() == typeof(Circle))
+                  {
+                     Circle circle = entity as Circle;
+                     output = GetGcode(circle, speed, power * 10);
+                  }
+
+                  for (int i = 0; i < repeat; i++)
+                  {
+                     gcode.Add($";{entity.GetType().ToString().Split('.').Last()} on layer  {entity.Layer}, pass {i + 1}");
+                     gcode.AddRange(output);
+                  }
                }
 
-               ReadLayerParams(out speed, out power, out repeat, props, entity.Layer);
-
-               if (entity.GetType() == typeof(Polyline))
-               {
-                  Polyline polyline = entity as Polyline;
-                  output = GetGcode(polyline, speed, power * 10);
-               }
-
-               if (entity.GetType() == typeof(Circle))
-               {
-                  Circle circle = entity as Circle;
-                  output = GetGcode(circle, speed, power * 10);
-               }
-
-               for (int i = 0; i < repeat; i++)
-               {
-                  gcode.Add($";{entity.GetType().ToString().Split('.').Last()} on layer  {entity.Layer}, pass {i + 1}");
-                  gcode.AddRange(output);
-               }
             }
-
             _totalGCode.Add(";This gcode was genrated by GenGcode Autocad plugin");
             _totalGCode.Add(";Latest version of the plugin you can get on https://github.com/YaroslavTsel/GenGcode");
 
@@ -103,6 +108,18 @@ namespace GenGcode
          }
 
          SaveGcode(_totalGCode,selected);
+
+         Dictionary<string, List<Entity>> EntryByLayer(Transaction tr)
+         {
+            List<Entity> entities = new List<Entity>();
+
+            foreach (ObjectId id in elements)
+            {
+               entities.Add((Entity)tr.GetObject(id, OpenMode.ForRead));
+
+            }
+             return entities.GroupBy(o => o.Layer).ToDictionary(g => g.Key, g => g.ToList());
+         }
       }
 
 
@@ -113,15 +130,19 @@ namespace GenGcode
          return sel?.GetObjectIds()?.ToList();
       }
 
-      public static bool ReadLayerParams(out int speed, out int power, out int repeat, SortedDictionary<string, string> props, string layerName)
+      public static bool ReadLayerParams( out int speed, out int power, out int repeat, SortedDictionary<string, string> props,string layerName)
       {
-         if (props.ContainsKey(layerName))
+         foreach (var prop in props)
          {
-            var values = props[layerName].Split(';');
-            speed = Convert.ToInt32(values[0]);
-            power = Convert.ToInt32(values[1]);
-            repeat = Convert.ToInt32(values[2]);
-            return true;
+            var values = prop.Value.Split(';');
+
+            if (layerName == values[0])
+            {
+               speed = Convert.ToInt32(values[1]);
+               power = Convert.ToInt32(values[2]);
+               repeat = Convert.ToInt32(values[3]);
+               return true;
+            } 
          }
          speed = 0;
          power = 0;
@@ -150,8 +171,6 @@ namespace GenGcode
          {
             customProp.Add(records.Key.ToString(), records.Value.ToString());
          }
-
-       
 
          return customProp;
       }
