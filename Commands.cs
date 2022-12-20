@@ -61,6 +61,8 @@ namespace GenGcode
 
               string  layerName = prop.Value.Split(';')[0];
 
+               if (!entryByLayerDict.ContainsKey(layerName)) continue;
+
                foreach (Entity entity in entryByLayerDict[layerName])
                {
                   List<string> output = new List<string>();
