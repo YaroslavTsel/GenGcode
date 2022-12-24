@@ -14,6 +14,17 @@ namespace GenGcode
 
       public static double minX, minY, maxX, maxY;
 
+      public static bool OutRange
+      {
+         get
+         {
+            if(minX<0||minY<0||maxX<0||maxY<0)
+               return true;
+            else 
+               return false;
+         }
+      }
+
       public List<string> OutGcode
       {
          get
