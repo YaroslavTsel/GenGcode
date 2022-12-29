@@ -17,6 +17,7 @@ namespace GenGcode
          _db = HostApplicationServices.WorkingDatabase;
 
          LoadFromCustomProps(Commands.ReadCustomProp(_db));
+         PassByBox.Checked = Commands._passByEntity;
 
       }
 
@@ -43,7 +44,7 @@ namespace GenGcode
             comboCount = fillNextCombo(prop);
          }
 
-         int fillNextCombo(KeyValuePair<string,string> prop)
+         int fillNextCombo(KeyValuePair<string, string> prop)
          {
             string layerName;
             int speed, power, repeat;
@@ -177,6 +178,7 @@ namespace GenGcode
             if (comboBox6.Text != "") SetCustomProperty(_db, "EngraveProp6", engraveProp6);
             if (comboBox7.Text != "") SetCustomProperty(_db, "EngraveProp7", engraveProp7);
             if (comboBox8.Text != "") SetCustomProperty(_db, "EngraveProp8", engraveProp8);
+            SetCustomProperty(_db, "PassByElement", PassByBox.Checked.ToString());
          }
       }
 

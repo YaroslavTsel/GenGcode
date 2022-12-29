@@ -14,7 +14,7 @@ namespace GenGcode
    public class Commands : IExtensionApplication
    {
       List<string> _totalGCode;
-
+     public static bool _passByEntity;
       public void Initialize()
       {
          MessageBox.Show("GenGcode loaded. \r\n Type \"GETGCODE\" to run \r\n  or \"SETGCODE\" to setup");
@@ -47,7 +47,7 @@ namespace GenGcode
             {
                elements = new List<ObjectId>();
                selected = false;
-               BlockTableRecord ms = (BlockTableRecord)tr.GetObject(SymbolUtilityServices.GetBlockModelSpaceId(db), OpenMode.ForWrite);
+               BlockTableRecord ms = (BlockTableRecord)tr.GetObject(SymbolUtilityServices.GetBlockModelSpaceId(db), OpenMode.ForRead);
                foreach (ObjectId id in ms)
                {
                   elements.Add(id);
@@ -76,7 +76,7 @@ namespace GenGcode
 
                ReadLayerParams(out speed, out power, out repeat, prop.Value);
 
-               GetLayerGcode(gcode, speed, power, repeat, layerName, optimizedPolylines, optimtzedCircles);
+               GetLayerGcode(gcode, speed, power, repeat, layerName, optimizedPolylines, optimtzedCircles, _passByEntity, tr);
 
             }
 
@@ -160,17 +160,23 @@ namespace GenGcode
       {
          Point3d point = new Point3d(0, 0, 0);
 
+
+
+
+
+
+
          List<Polyline> result = new List<Polyline>();
          while (polylines.Count > 0)
          {
 
-            double minStartDist =  polylines.Min(x => x.StartPoint.DistanceTo(point));
-            double minEndDist =  polylines.Min(x => x.EndPoint.DistanceTo(point));
+            double minStartDist = polylines.Min(x => x.StartPoint.DistanceTo(point));
+            double minEndDist = polylines.Min(x => x.EndPoint.DistanceTo(point));
 
             var shortestStartPoly = polylines.FirstOrDefault(x => x.StartPoint.DistanceTo(point) == minStartDist);
             var shortestEndPoly = polylines.FirstOrDefault(x => x.EndPoint.DistanceTo(point) == minEndDist);
-            
-            
+
+
             //var shortestStartPoly = polylines.OrderBy(x => x.StartPoint.DistanceTo(point)).FirstOrDefault();
             //var shortestEndPoly = polylines.OrderBy(x => x.EndPoint.DistanceTo(point)).FirstOrDefault();
 
@@ -214,28 +220,64 @@ namespace GenGcode
          return optimtzedCircles;
       }
 
-      private static void GetLayerGcode(List<string> gcode, int speed, int power, int repeat, string layerName, List<Polyline> optimizedPolylines, List<Circle> optimtzedCircles)
+      private static void GetLayerGcode(List<string> gcode, int speed, int power, int repeat, string layerName,
+                                        List<Polyline> optimizedPolylines, List<Circle> optimtzedCircles, bool repeatEachEntity, Transaction tr)
       {
-      List<string> output = new List<string>();
-         for (int i = 0; i < repeat; i++)
-         {
 
+         List<string> output = new List<string>();
+
+         if (repeatEachEntity)
+         {
             foreach (var polyline in optimizedPolylines)
             {
-
-               output.AddRange(GetGcode(polyline, speed, power * 10));
+               for (int i = 0; i < repeat; i++)
+               {
+                  output.Add($";Polyline ID: {polyline.Id}, Layer  {layerName}, pass {i+1}");
+                  output.AddRange(GetGcode(polyline, speed, power * 10));
+                  var poly = tr.GetObject(polyline.Id, OpenMode.ForWrite) as Polyline;
+                  poly.ReverseCurve();
+                  
+               }
             }
 
             foreach (var circle in optimtzedCircles)
             {
-               output.AddRange(GetGcode(circle, speed, power * 10));
+               for (int i = 0; i < repeat; i++)
+               {
+                  output.Add($";Circle ID: {circle.Id}, Layer  {layerName}, pass {i+1}");
+                  output.AddRange(GetGcode(circle, speed, power * 10));
+
+               }
             }
 
-
-            gcode.Add($";Layer  {layerName}, pass {i + 1}");
             gcode.AddRange(output);
+
+         }
+         else
+         {
+            for (int i = 0; i < repeat; i++)
+            {
+
+               foreach (var polyline in optimizedPolylines)
+               {
+
+                  output.AddRange(GetGcode(polyline, speed, power * 10));
+               }
+
+               foreach (var circle in optimtzedCircles)
+               {
+                  output.AddRange(GetGcode(circle, speed, power * 10));
+               }
+
+
+               gcode.Add($";Layer  {layerName}, pass {i + 1}");
+               gcode.AddRange(output);
+            }
          }
       }
+
+
+
 
       private static List<ObjectId> GetSelectedElements()
       {
@@ -246,15 +288,15 @@ namespace GenGcode
 
       public static bool ReadLayerParams(out int speed, out int power, out int repeat, string prop)
       {
-       
-            var values = prop.Split(';');
 
-    
-               speed = Convert.ToInt32(values[1]);
-               power = Convert.ToInt32(values[2]);
-               repeat = Convert.ToInt32(values[3]);
-               return true;
-    
+         var values = prop.Split(';');
+
+
+         speed = Convert.ToInt32(values[1]);
+         power = Convert.ToInt32(values[2]);
+         repeat = Convert.ToInt32(values[3]);
+         return true;
+
       }
 
       [CommandMethod("SETGCODE")]
@@ -276,7 +318,12 @@ namespace GenGcode
 
          while (records.MoveNext())
          {
-            customProp.Add(records.Key.ToString(), records.Value.ToString());
+            if (records.Key.ToString().Contains("EngraveProp"))
+               customProp.Add(records.Key.ToString(), records.Value.ToString());
+            else if (records.Key.ToString() == "PassByElement")
+            {
+               _passByEntity = Convert.ToBoolean(records.Value);
+            }
          }
 
          return customProp;
@@ -288,21 +335,23 @@ namespace GenGcode
 
          int segmentsCount = polyline.Closed ? polyline.NumberOfVertices : polyline.NumberOfVertices - 1;
 
+       
 
 
          for (int i = 0; i < segmentsCount; i++)
          {
             SegmentType segmentType = polyline.GetSegmentType(i);
 
+
             if (segmentType == SegmentType.Line)
             {
-               LineSegment2d line = polyline.GetLineSegment2dAt(i);
-               polyGCode.addLine(line);
+
+               polyGCode.addLine(polyline, i);
             }
             if (segmentType == SegmentType.Arc)
             {
-               CircularArc2d arc = polyline.GetArcSegment2dAt(i);
-               polyGCode.addArc(arc);
+
+               polyGCode.addArc(polyline, i);
             }
          }
 
