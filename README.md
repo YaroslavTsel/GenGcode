@@ -22,5 +22,9 @@ If you want to get gcode for only a few items, you can select them now in Autoca
 
 As a result you'll get gcode file wich you can use with engraving programs or upload directly to your engraving laser. If you have selected several elements, the suffix "_Selected" will be added to the file name, otherwise the suffix "_All". The first command to the laser is walk all perimeter. It's just to ensure that there is enough space. That is all! 
 
+UPD:
+Before using downloaded dll you have to unlock it in its properties:
+
+<img src="https://user-images.githubusercontent.com/119655739/210131889-719f2b06-f319-4217-bc75-875ff35d7d7f.png" alt="drawing" width="350"/>
 
 
