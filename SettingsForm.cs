@@ -221,5 +221,40 @@ namespace GenGcode
       {
 
       }
+
+      private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+      {
+         if (RepeatUD2.Value == 0) RepeatUD2.Value = 1;
+      }
+      private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
+      {
+         if (RepeatUD3.Value == 0) RepeatUD3.Value = 1;
+      }
+
+      private void comboBox4_SelectedIndexChanged(object sender, EventArgs e)
+      {
+         if (RepeatUD4.Value == 0) RepeatUD4.Value = 1;
+      }
+
+      private void comboBox5_SelectedIndexChanged(object sender, EventArgs e)
+      {
+         if (RepeatUD5.Value == 0) RepeatUD5.Value = 1;
+      }
+
+      private void comboBox6_SelectedIndexChanged(object sender, EventArgs e)
+      {
+         if (RepeatUD6.Value == 0) RepeatUD6.Value = 1;
+      }
+
+      private void comboBox7_SelectedIndexChanged(object sender, EventArgs e)
+      {
+         if (RepeatUD7.Value == 0) RepeatUD7.Value = 1;
+      }
+
+      private void comboBox8_SelectedIndexChanged(object sender, EventArgs e)
+      {
+         if (RepeatUD8.Value == 0) RepeatUD8.Value = 1;
+      }
+   
    }
 }

@@ -275,6 +275,7 @@
          this.comboBox2.Name = "comboBox2";
          this.comboBox2.Size = new System.Drawing.Size(355, 28);
          this.comboBox2.TabIndex = 5;
+         this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
          // 
          // SpeedUD3
          // 
@@ -339,6 +340,7 @@
          this.comboBox3.Name = "comboBox3";
          this.comboBox3.Size = new System.Drawing.Size(355, 28);
          this.comboBox3.TabIndex = 10;
+         this.comboBox3.SelectedIndexChanged += new System.EventHandler(this.comboBox3_SelectedIndexChanged);
          // 
          // comboBox4
          // 
@@ -347,6 +349,7 @@
          this.comboBox4.Name = "comboBox4";
          this.comboBox4.Size = new System.Drawing.Size(355, 28);
          this.comboBox4.TabIndex = 10;
+         this.comboBox4.SelectedIndexChanged += new System.EventHandler(this.comboBox4_SelectedIndexChanged);
          // 
          // RepeatUD4
          // 
@@ -431,6 +434,7 @@
          this.comboBox5.Name = "comboBox5";
          this.comboBox5.Size = new System.Drawing.Size(355, 28);
          this.comboBox5.TabIndex = 0;
+         this.comboBox5.SelectedIndexChanged += new System.EventHandler(this.comboBox5_SelectedIndexChanged);
          // 
          // RepeatUD5
          // 
@@ -495,6 +499,7 @@
          this.comboBox6.Name = "comboBox6";
          this.comboBox6.Size = new System.Drawing.Size(355, 28);
          this.comboBox6.TabIndex = 5;
+         this.comboBox6.SelectedIndexChanged += new System.EventHandler(this.comboBox6_SelectedIndexChanged);
          // 
          // RepeatUD6
          // 
@@ -559,6 +564,7 @@
          this.comboBox7.Name = "comboBox7";
          this.comboBox7.Size = new System.Drawing.Size(355, 28);
          this.comboBox7.TabIndex = 10;
+         this.comboBox7.SelectedIndexChanged += new System.EventHandler(this.comboBox7_SelectedIndexChanged);
          // 
          // comboBox8
          // 
@@ -567,6 +573,7 @@
          this.comboBox8.Name = "comboBox8";
          this.comboBox8.Size = new System.Drawing.Size(355, 28);
          this.comboBox8.TabIndex = 10;
+         this.comboBox8.SelectedIndexChanged += new System.EventHandler(this.comboBox8_SelectedIndexChanged);
          // 
          // RepeatUD7
          // 
