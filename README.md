@@ -19,9 +19,9 @@ Then type "NETLOAD" in Autocad and load the "GenGcode.dll". You can see mini ins
 
 If you want to get gcode for only a few items, you can select them now in Autocad.After that type "GETGCODE". The settings window will appear so you can setup how do you want engrave each layer. All settings will be saved in the drawing and you can change them any time by typing "SETGCODE". 
 
-<img src="https://user-images.githubusercontent.com/119655739/210167634-51e163d1-bee1-451f-9e47-6e4c44af986e.png" alt="drawing" width="350"/>
+<img src="https://user-images.githubusercontent.com/119655739/221532215-10bdc69e-1c68-458c-b849-a6a78493db54.png" alt="drawing" width="350"/>
 
-Here you can check the "pass by element" optoin. So, laser will do all passes for one element and then goas to the next one. If it is not checked, laser will pass all elements on layer every time.
+Here you can check the "pass by element" option. So, laser will do all passes for one element and then goas to the next one. If it is not checked, laser will pass all elements on layer every time. Dynamic power mode will automatically adjust laser power based on the current speed relative to the programmed rate. To use it, your laser must support "M4" command.
 
 As a result you'll get gcode file wich you can use with engraving programs or upload directly to your engraving laser. If you have selected several elements, the suffix "_Selected" will be added to the file name, otherwise the suffix "_All". The first command to the laser is walk all perimeter. It's just to ensure that there is enough space. That is all! 
 
