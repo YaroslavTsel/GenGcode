@@ -76,6 +76,15 @@
          this.label12 = new System.Windows.Forms.Label();
          this.label13 = new System.Windows.Forms.Label();
          this.PassByBox = new System.Windows.Forms.CheckBox();
+         this.DynamPwrBox1 = new System.Windows.Forms.CheckBox();
+         this.DynamPwrBox2 = new System.Windows.Forms.CheckBox();
+         this.label14 = new System.Windows.Forms.Label();
+         this.DynamPwrBox3 = new System.Windows.Forms.CheckBox();
+         this.DynamPwrBox4 = new System.Windows.Forms.CheckBox();
+         this.DynamPwrBox5 = new System.Windows.Forms.CheckBox();
+         this.DynamPwrBox6 = new System.Windows.Forms.CheckBox();
+         this.DynamPwrBox7 = new System.Windows.Forms.CheckBox();
+         this.DynamPwrBox8 = new System.Windows.Forms.CheckBox();
          ((System.ComponentModel.ISupportInitialize)(this.RepeatUD1)).BeginInit();
          ((System.ComponentModel.ISupportInitialize)(this.PowerUD1)).BeginInit();
          ((System.ComponentModel.ISupportInitialize)(this.SpeedUD1)).BeginInit();
@@ -105,7 +114,7 @@
          // comboBox1
          // 
          this.comboBox1.FormattingEnabled = true;
-         this.comboBox1.Location = new System.Drawing.Point(63, 34);
+         this.comboBox1.Location = new System.Drawing.Point(63, 50);
          this.comboBox1.Name = "comboBox1";
          this.comboBox1.Size = new System.Drawing.Size(355, 28);
          this.comboBox1.TabIndex = 0;
@@ -113,7 +122,7 @@
          // label1
          // 
          this.label1.AutoSize = true;
-         this.label1.Location = new System.Drawing.Point(223, 11);
+         this.label1.Location = new System.Drawing.Point(223, 19);
          this.label1.Name = "label1";
          this.label1.Size = new System.Drawing.Size(48, 20);
          this.label1.TabIndex = 1;
@@ -122,7 +131,7 @@
          // label2
          // 
          this.label2.AutoSize = true;
-         this.label2.Location = new System.Drawing.Point(417, 8);
+         this.label2.Location = new System.Drawing.Point(417, 16);
          this.label2.Name = "label2";
          this.label2.Size = new System.Drawing.Size(119, 20);
          this.label2.TabIndex = 1;
@@ -131,7 +140,7 @@
          // label3
          // 
          this.label3.AutoSize = true;
-         this.label3.Location = new System.Drawing.Point(542, 8);
+         this.label3.Location = new System.Drawing.Point(542, 16);
          this.label3.Name = "label3";
          this.label3.Size = new System.Drawing.Size(71, 20);
          this.label3.TabIndex = 1;
@@ -140,7 +149,7 @@
          // label4
          // 
          this.label4.AutoSize = true;
-         this.label4.Location = new System.Drawing.Point(631, 8);
+         this.label4.Location = new System.Drawing.Point(631, 16);
          this.label4.Name = "label4";
          this.label4.Size = new System.Drawing.Size(44, 20);
          this.label4.TabIndex = 1;
@@ -148,7 +157,7 @@
          // 
          // RepeatUD1
          // 
-         this.RepeatUD1.Location = new System.Drawing.Point(635, 33);
+         this.RepeatUD1.Location = new System.Drawing.Point(635, 49);
          this.RepeatUD1.Minimum = new decimal(new int[] {
             1,
             0,
@@ -170,7 +179,7 @@
             0,
             0,
             0});
-         this.PowerUD1.Location = new System.Drawing.Point(546, 34);
+         this.PowerUD1.Location = new System.Drawing.Point(546, 50);
          this.PowerUD1.Minimum = new decimal(new int[] {
             10,
             0,
@@ -192,7 +201,7 @@
             0,
             0,
             0});
-         this.SpeedUD1.Location = new System.Drawing.Point(424, 34);
+         this.SpeedUD1.Location = new System.Drawing.Point(424, 50);
          this.SpeedUD1.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -219,7 +228,7 @@
             0,
             0,
             0});
-         this.SpeedUD2.Location = new System.Drawing.Point(424, 68);
+         this.SpeedUD2.Location = new System.Drawing.Point(424, 84);
          this.SpeedUD2.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -246,7 +255,7 @@
             0,
             0,
             0});
-         this.PowerUD2.Location = new System.Drawing.Point(546, 68);
+         this.PowerUD2.Location = new System.Drawing.Point(546, 84);
          this.PowerUD2.Minimum = new decimal(new int[] {
             10,
             0,
@@ -263,7 +272,7 @@
          // 
          // RepeatUD2
          // 
-         this.RepeatUD2.Location = new System.Drawing.Point(635, 67);
+         this.RepeatUD2.Location = new System.Drawing.Point(635, 83);
          this.RepeatUD2.Name = "RepeatUD2";
          this.RepeatUD2.Size = new System.Drawing.Size(83, 26);
          this.RepeatUD2.TabIndex = 8;
@@ -271,7 +280,7 @@
          // comboBox2
          // 
          this.comboBox2.FormattingEnabled = true;
-         this.comboBox2.Location = new System.Drawing.Point(63, 68);
+         this.comboBox2.Location = new System.Drawing.Point(63, 84);
          this.comboBox2.Name = "comboBox2";
          this.comboBox2.Size = new System.Drawing.Size(355, 28);
          this.comboBox2.TabIndex = 5;
@@ -284,7 +293,7 @@
             0,
             0,
             0});
-         this.SpeedUD3.Location = new System.Drawing.Point(424, 102);
+         this.SpeedUD3.Location = new System.Drawing.Point(424, 118);
          this.SpeedUD3.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -311,7 +320,7 @@
             0,
             0,
             0});
-         this.PowerUD3.Location = new System.Drawing.Point(546, 102);
+         this.PowerUD3.Location = new System.Drawing.Point(546, 118);
          this.PowerUD3.Minimum = new decimal(new int[] {
             10,
             0,
@@ -328,7 +337,7 @@
          // 
          // RepeatUD3
          // 
-         this.RepeatUD3.Location = new System.Drawing.Point(635, 101);
+         this.RepeatUD3.Location = new System.Drawing.Point(635, 117);
          this.RepeatUD3.Name = "RepeatUD3";
          this.RepeatUD3.Size = new System.Drawing.Size(83, 26);
          this.RepeatUD3.TabIndex = 13;
@@ -336,7 +345,7 @@
          // comboBox3
          // 
          this.comboBox3.FormattingEnabled = true;
-         this.comboBox3.Location = new System.Drawing.Point(63, 102);
+         this.comboBox3.Location = new System.Drawing.Point(63, 118);
          this.comboBox3.Name = "comboBox3";
          this.comboBox3.Size = new System.Drawing.Size(355, 28);
          this.comboBox3.TabIndex = 10;
@@ -345,7 +354,7 @@
          // comboBox4
          // 
          this.comboBox4.FormattingEnabled = true;
-         this.comboBox4.Location = new System.Drawing.Point(63, 136);
+         this.comboBox4.Location = new System.Drawing.Point(63, 152);
          this.comboBox4.Name = "comboBox4";
          this.comboBox4.Size = new System.Drawing.Size(355, 28);
          this.comboBox4.TabIndex = 10;
@@ -353,7 +362,7 @@
          // 
          // RepeatUD4
          // 
-         this.RepeatUD4.Location = new System.Drawing.Point(635, 135);
+         this.RepeatUD4.Location = new System.Drawing.Point(635, 151);
          this.RepeatUD4.Name = "RepeatUD4";
          this.RepeatUD4.Size = new System.Drawing.Size(83, 26);
          this.RepeatUD4.TabIndex = 13;
@@ -365,7 +374,7 @@
             0,
             0,
             0});
-         this.PowerUD4.Location = new System.Drawing.Point(546, 136);
+         this.PowerUD4.Location = new System.Drawing.Point(546, 152);
          this.PowerUD4.Minimum = new decimal(new int[] {
             10,
             0,
@@ -387,7 +396,7 @@
             0,
             0,
             0});
-         this.SpeedUD4.Location = new System.Drawing.Point(424, 136);
+         this.SpeedUD4.Location = new System.Drawing.Point(424, 152);
          this.SpeedUD4.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -409,7 +418,7 @@
          // 
          // button1
          // 
-         this.button1.Location = new System.Drawing.Point(12, 363);
+         this.button1.Location = new System.Drawing.Point(12, 379);
          this.button1.Name = "button1";
          this.button1.Size = new System.Drawing.Size(117, 40);
          this.button1.TabIndex = 15;
@@ -419,7 +428,7 @@
          // 
          // button2
          // 
-         this.button2.Location = new System.Drawing.Point(562, 363);
+         this.button2.Location = new System.Drawing.Point(562, 379);
          this.button2.Name = "button2";
          this.button2.Size = new System.Drawing.Size(117, 40);
          this.button2.TabIndex = 15;
@@ -430,7 +439,7 @@
          // comboBox5
          // 
          this.comboBox5.FormattingEnabled = true;
-         this.comboBox5.Location = new System.Drawing.Point(63, 170);
+         this.comboBox5.Location = new System.Drawing.Point(63, 186);
          this.comboBox5.Name = "comboBox5";
          this.comboBox5.Size = new System.Drawing.Size(355, 28);
          this.comboBox5.TabIndex = 0;
@@ -438,7 +447,7 @@
          // 
          // RepeatUD5
          // 
-         this.RepeatUD5.Location = new System.Drawing.Point(635, 169);
+         this.RepeatUD5.Location = new System.Drawing.Point(635, 185);
          this.RepeatUD5.Name = "RepeatUD5";
          this.RepeatUD5.Size = new System.Drawing.Size(83, 26);
          this.RepeatUD5.TabIndex = 3;
@@ -450,7 +459,7 @@
             0,
             0,
             0});
-         this.PowerUD5.Location = new System.Drawing.Point(546, 170);
+         this.PowerUD5.Location = new System.Drawing.Point(546, 186);
          this.PowerUD5.Minimum = new decimal(new int[] {
             10,
             0,
@@ -472,7 +481,7 @@
             0,
             0,
             0});
-         this.SpeedUD5.Location = new System.Drawing.Point(424, 170);
+         this.SpeedUD5.Location = new System.Drawing.Point(424, 186);
          this.SpeedUD5.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -495,7 +504,7 @@
          // comboBox6
          // 
          this.comboBox6.FormattingEnabled = true;
-         this.comboBox6.Location = new System.Drawing.Point(63, 204);
+         this.comboBox6.Location = new System.Drawing.Point(63, 220);
          this.comboBox6.Name = "comboBox6";
          this.comboBox6.Size = new System.Drawing.Size(355, 28);
          this.comboBox6.TabIndex = 5;
@@ -503,7 +512,7 @@
          // 
          // RepeatUD6
          // 
-         this.RepeatUD6.Location = new System.Drawing.Point(635, 203);
+         this.RepeatUD6.Location = new System.Drawing.Point(635, 219);
          this.RepeatUD6.Name = "RepeatUD6";
          this.RepeatUD6.Size = new System.Drawing.Size(83, 26);
          this.RepeatUD6.TabIndex = 8;
@@ -515,7 +524,7 @@
             0,
             0,
             0});
-         this.PowerUD6.Location = new System.Drawing.Point(546, 204);
+         this.PowerUD6.Location = new System.Drawing.Point(546, 220);
          this.PowerUD6.Minimum = new decimal(new int[] {
             10,
             0,
@@ -537,7 +546,7 @@
             0,
             0,
             0});
-         this.SpeedUD6.Location = new System.Drawing.Point(424, 204);
+         this.SpeedUD6.Location = new System.Drawing.Point(424, 220);
          this.SpeedUD6.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -560,7 +569,7 @@
          // comboBox7
          // 
          this.comboBox7.FormattingEnabled = true;
-         this.comboBox7.Location = new System.Drawing.Point(63, 238);
+         this.comboBox7.Location = new System.Drawing.Point(63, 254);
          this.comboBox7.Name = "comboBox7";
          this.comboBox7.Size = new System.Drawing.Size(355, 28);
          this.comboBox7.TabIndex = 10;
@@ -569,7 +578,7 @@
          // comboBox8
          // 
          this.comboBox8.FormattingEnabled = true;
-         this.comboBox8.Location = new System.Drawing.Point(63, 272);
+         this.comboBox8.Location = new System.Drawing.Point(63, 288);
          this.comboBox8.Name = "comboBox8";
          this.comboBox8.Size = new System.Drawing.Size(355, 28);
          this.comboBox8.TabIndex = 10;
@@ -577,14 +586,14 @@
          // 
          // RepeatUD7
          // 
-         this.RepeatUD7.Location = new System.Drawing.Point(635, 237);
+         this.RepeatUD7.Location = new System.Drawing.Point(635, 253);
          this.RepeatUD7.Name = "RepeatUD7";
          this.RepeatUD7.Size = new System.Drawing.Size(83, 26);
          this.RepeatUD7.TabIndex = 13;
          // 
          // RepeatUD8
          // 
-         this.RepeatUD8.Location = new System.Drawing.Point(635, 271);
+         this.RepeatUD8.Location = new System.Drawing.Point(635, 287);
          this.RepeatUD8.Name = "RepeatUD8";
          this.RepeatUD8.Size = new System.Drawing.Size(83, 26);
          this.RepeatUD8.TabIndex = 13;
@@ -596,7 +605,7 @@
             0,
             0,
             0});
-         this.PowerUD7.Location = new System.Drawing.Point(546, 238);
+         this.PowerUD7.Location = new System.Drawing.Point(546, 254);
          this.PowerUD7.Minimum = new decimal(new int[] {
             10,
             0,
@@ -618,7 +627,7 @@
             0,
             0,
             0});
-         this.PowerUD8.Location = new System.Drawing.Point(546, 272);
+         this.PowerUD8.Location = new System.Drawing.Point(546, 288);
          this.PowerUD8.Minimum = new decimal(new int[] {
             10,
             0,
@@ -640,7 +649,7 @@
             0,
             0,
             0});
-         this.SpeedUD7.Location = new System.Drawing.Point(424, 238);
+         this.SpeedUD7.Location = new System.Drawing.Point(424, 254);
          this.SpeedUD7.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -667,7 +676,7 @@
             0,
             0,
             0});
-         this.SpeedUD8.Location = new System.Drawing.Point(424, 272);
+         this.SpeedUD8.Location = new System.Drawing.Point(424, 288);
          this.SpeedUD8.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -690,7 +699,7 @@
          // label5
          // 
          this.label5.AutoSize = true;
-         this.label5.Location = new System.Drawing.Point(8, 11);
+         this.label5.Location = new System.Drawing.Point(8, 19);
          this.label5.Name = "label5";
          this.label5.Size = new System.Drawing.Size(49, 20);
          this.label5.TabIndex = 1;
@@ -699,7 +708,7 @@
          // label6
          // 
          this.label6.AutoSize = true;
-         this.label6.Location = new System.Drawing.Point(24, 36);
+         this.label6.Location = new System.Drawing.Point(24, 52);
          this.label6.Name = "label6";
          this.label6.Size = new System.Drawing.Size(18, 20);
          this.label6.TabIndex = 1;
@@ -709,7 +718,7 @@
          // label7
          // 
          this.label7.AutoSize = true;
-         this.label7.Location = new System.Drawing.Point(24, 71);
+         this.label7.Location = new System.Drawing.Point(24, 87);
          this.label7.Name = "label7";
          this.label7.Size = new System.Drawing.Size(18, 20);
          this.label7.TabIndex = 1;
@@ -719,7 +728,7 @@
          // label8
          // 
          this.label8.AutoSize = true;
-         this.label8.Location = new System.Drawing.Point(24, 105);
+         this.label8.Location = new System.Drawing.Point(24, 121);
          this.label8.Name = "label8";
          this.label8.Size = new System.Drawing.Size(18, 20);
          this.label8.TabIndex = 1;
@@ -729,7 +738,7 @@
          // label9
          // 
          this.label9.AutoSize = true;
-         this.label9.Location = new System.Drawing.Point(24, 139);
+         this.label9.Location = new System.Drawing.Point(24, 155);
          this.label9.Name = "label9";
          this.label9.Size = new System.Drawing.Size(18, 20);
          this.label9.TabIndex = 1;
@@ -739,7 +748,7 @@
          // label10
          // 
          this.label10.AutoSize = true;
-         this.label10.Location = new System.Drawing.Point(24, 172);
+         this.label10.Location = new System.Drawing.Point(24, 188);
          this.label10.Name = "label10";
          this.label10.Size = new System.Drawing.Size(18, 20);
          this.label10.TabIndex = 1;
@@ -749,7 +758,7 @@
          // label11
          // 
          this.label11.AutoSize = true;
-         this.label11.Location = new System.Drawing.Point(24, 207);
+         this.label11.Location = new System.Drawing.Point(24, 223);
          this.label11.Name = "label11";
          this.label11.Size = new System.Drawing.Size(18, 20);
          this.label11.TabIndex = 1;
@@ -759,7 +768,7 @@
          // label12
          // 
          this.label12.AutoSize = true;
-         this.label12.Location = new System.Drawing.Point(24, 239);
+         this.label12.Location = new System.Drawing.Point(24, 255);
          this.label12.Name = "label12";
          this.label12.Size = new System.Drawing.Size(18, 20);
          this.label12.TabIndex = 1;
@@ -769,7 +778,7 @@
          // label13
          // 
          this.label13.AutoSize = true;
-         this.label13.Location = new System.Drawing.Point(24, 274);
+         this.label13.Location = new System.Drawing.Point(24, 290);
          this.label13.Name = "label13";
          this.label13.Size = new System.Drawing.Size(18, 20);
          this.label13.TabIndex = 1;
@@ -781,18 +790,108 @@
          this.PassByBox.AutoSize = true;
          this.PassByBox.Checked = true;
          this.PassByBox.CheckState = System.Windows.Forms.CheckState.Checked;
-         this.PassByBox.Location = new System.Drawing.Point(63, 322);
+         this.PassByBox.Location = new System.Drawing.Point(63, 338);
          this.PassByBox.Name = "PassByBox";
          this.PassByBox.Size = new System.Drawing.Size(150, 24);
          this.PassByBox.TabIndex = 16;
          this.PassByBox.Text = "pass by element";
          this.PassByBox.UseVisualStyleBackColor = true;
          // 
+         // DynamPwrBox1
+         // 
+         this.DynamPwrBox1.AutoSize = true;
+         this.DynamPwrBox1.Location = new System.Drawing.Point(744, 50);
+         this.DynamPwrBox1.Name = "DynamPwrBox1";
+         this.DynamPwrBox1.Size = new System.Drawing.Size(22, 21);
+         this.DynamPwrBox1.TabIndex = 17;
+         this.DynamPwrBox1.UseVisualStyleBackColor = true;
+         // 
+         // DynamPwrBox2
+         // 
+         this.DynamPwrBox2.AutoSize = true;
+         this.DynamPwrBox2.Location = new System.Drawing.Point(744, 87);
+         this.DynamPwrBox2.Name = "DynamPwrBox2";
+         this.DynamPwrBox2.Size = new System.Drawing.Size(22, 21);
+         this.DynamPwrBox2.TabIndex = 18;
+         this.DynamPwrBox2.UseVisualStyleBackColor = true;
+         // 
+         // label14
+         // 
+         this.label14.AutoSize = true;
+         this.label14.Location = new System.Drawing.Point(725, 7);
+         this.label14.Name = "label14";
+         this.label14.Size = new System.Drawing.Size(70, 40);
+         this.label14.TabIndex = 19;
+         this.label14.Text = "Dynamic\r\n power";
+         // 
+         // DynamPwrBox3
+         // 
+         this.DynamPwrBox3.AutoSize = true;
+         this.DynamPwrBox3.Location = new System.Drawing.Point(744, 120);
+         this.DynamPwrBox3.Name = "DynamPwrBox3";
+         this.DynamPwrBox3.Size = new System.Drawing.Size(22, 21);
+         this.DynamPwrBox3.TabIndex = 20;
+         this.DynamPwrBox3.UseVisualStyleBackColor = true;
+         // 
+         // DynamPwrBox4
+         // 
+         this.DynamPwrBox4.AutoSize = true;
+         this.DynamPwrBox4.Location = new System.Drawing.Point(744, 156);
+         this.DynamPwrBox4.Name = "DynamPwrBox4";
+         this.DynamPwrBox4.Size = new System.Drawing.Size(22, 21);
+         this.DynamPwrBox4.TabIndex = 21;
+         this.DynamPwrBox4.UseVisualStyleBackColor = true;
+         // 
+         // DynamPwrBox5
+         // 
+         this.DynamPwrBox5.AutoSize = true;
+         this.DynamPwrBox5.Location = new System.Drawing.Point(744, 188);
+         this.DynamPwrBox5.Name = "DynamPwrBox5";
+         this.DynamPwrBox5.Size = new System.Drawing.Size(22, 21);
+         this.DynamPwrBox5.TabIndex = 22;
+         this.DynamPwrBox5.UseVisualStyleBackColor = true;
+         // 
+         // DynamPwrBox6
+         // 
+         this.DynamPwrBox6.AutoSize = true;
+         this.DynamPwrBox6.Location = new System.Drawing.Point(744, 222);
+         this.DynamPwrBox6.Name = "DynamPwrBox6";
+         this.DynamPwrBox6.Size = new System.Drawing.Size(22, 21);
+         this.DynamPwrBox6.TabIndex = 23;
+         this.DynamPwrBox6.UseVisualStyleBackColor = true;
+         // 
+         // DynamPwrBox7
+         // 
+         this.DynamPwrBox7.AutoSize = true;
+         this.DynamPwrBox7.Location = new System.Drawing.Point(744, 258);
+         this.DynamPwrBox7.Name = "DynamPwrBox7";
+         this.DynamPwrBox7.Size = new System.Drawing.Size(22, 21);
+         this.DynamPwrBox7.TabIndex = 24;
+         this.DynamPwrBox7.UseVisualStyleBackColor = true;
+         // 
+         // DynamPwrBox8
+         // 
+         this.DynamPwrBox8.AutoSize = true;
+         this.DynamPwrBox8.Location = new System.Drawing.Point(744, 292);
+         this.DynamPwrBox8.Name = "DynamPwrBox8";
+         this.DynamPwrBox8.Size = new System.Drawing.Size(22, 21);
+         this.DynamPwrBox8.TabIndex = 25;
+         this.DynamPwrBox8.UseVisualStyleBackColor = true;
+         // 
          // SettingsForm
          // 
          this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
          this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-         this.ClientSize = new System.Drawing.Size(752, 463);
+         this.ClientSize = new System.Drawing.Size(902, 463);
+         this.Controls.Add(this.DynamPwrBox8);
+         this.Controls.Add(this.DynamPwrBox7);
+         this.Controls.Add(this.DynamPwrBox6);
+         this.Controls.Add(this.DynamPwrBox5);
+         this.Controls.Add(this.DynamPwrBox4);
+         this.Controls.Add(this.DynamPwrBox3);
+         this.Controls.Add(this.label14);
+         this.Controls.Add(this.DynamPwrBox2);
+         this.Controls.Add(this.DynamPwrBox1);
          this.Controls.Add(this.PassByBox);
          this.Controls.Add(this.button2);
          this.Controls.Add(this.button1);
@@ -922,5 +1021,14 @@
       private System.Windows.Forms.Label label12;
       private System.Windows.Forms.Label label13;
       private System.Windows.Forms.CheckBox PassByBox;
+      private System.Windows.Forms.CheckBox DynamPwrBox1;
+      private System.Windows.Forms.CheckBox DynamPwrBox2;
+      private System.Windows.Forms.Label label14;
+      private System.Windows.Forms.CheckBox DynamPwrBox3;
+      private System.Windows.Forms.CheckBox DynamPwrBox4;
+      private System.Windows.Forms.CheckBox DynamPwrBox5;
+      private System.Windows.Forms.CheckBox DynamPwrBox6;
+      private System.Windows.Forms.CheckBox DynamPwrBox7;
+      private System.Windows.Forms.CheckBox DynamPwrBox8;
    }
 }

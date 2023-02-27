@@ -11,6 +11,7 @@ namespace GenGcode
       private List<string> _outGCode = new List<string>();
       private bool _first = true;
       private int _speed, _power;
+      private bool _dynPwr;
       public static double minX, minY, maxX, maxY;
 
       public static bool OutRange
@@ -33,11 +34,16 @@ namespace GenGcode
          }
       }
 
-      public Gcode(int speed, int power)
+      public Gcode(int speed, int power, bool dynPwr)
       {
          _speed = speed;
          _power = power;
-         _outGCode.Add("M3 S0");
+         _dynPwr = dynPwr;
+
+         if (dynPwr)
+            _outGCode.Add("M4 S0");
+         else
+            _outGCode.Add("M3 S0");
       }
 
       public void addLine(Polyline polyline, int index)

@@ -58,6 +58,8 @@
   <ItemGroup>
     <Compile Include="Commands.cs" />
     <Compile Include="ElemsLib.cs" />
+    <Compile Include="GetGcode.cs" />
+    <Compile Include="ImportGcode.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

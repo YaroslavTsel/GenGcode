@@ -17,7 +17,7 @@ namespace GenGcode
          _db = HostApplicationServices.WorkingDatabase;
 
          LoadFromCustomProps(Commands.ReadCustomProp(_db));
-         PassByBox.Checked = Commands._passByEntity;
+         PassByBox.Checked = GetGcode._passByEntity;
 
       }
 
@@ -48,8 +48,9 @@ namespace GenGcode
          {
             string layerName;
             int speed, power, repeat;
+            bool dynPwr;
 
-            DecodeProp(prop, out layerName, out speed, out power, out repeat);
+            DecodeProp(prop, out layerName, out speed, out power, out repeat,out dynPwr);
 
             switch (comboCount)
             {
@@ -58,6 +59,7 @@ namespace GenGcode
                   SpeedUD1.Value = speed;
                   PowerUD1.Value = power;
                   RepeatUD1.Value = repeat;
+                  DynamPwrBox1.Checked = dynPwr;
                   comboCount++;
                   break;
 
@@ -66,6 +68,7 @@ namespace GenGcode
                   SpeedUD2.Value = speed;
                   PowerUD2.Value = power;
                   RepeatUD2.Value = repeat;
+                  DynamPwrBox2.Checked = dynPwr;
                   comboCount++;
                   break;
 
@@ -74,6 +77,7 @@ namespace GenGcode
                   SpeedUD3.Value = speed;
                   PowerUD3.Value = power;
                   RepeatUD3.Value = repeat;
+                  DynamPwrBox3.Checked = dynPwr;
                   comboCount++;
                   break;
 
@@ -82,6 +86,7 @@ namespace GenGcode
                   SpeedUD4.Value = speed;
                   PowerUD4.Value = power;
                   RepeatUD4.Value = repeat;
+                  DynamPwrBox4.Checked = dynPwr;
                   comboCount++;
                   break;
 
@@ -90,6 +95,7 @@ namespace GenGcode
                   SpeedUD5.Value = speed;
                   PowerUD5.Value = power;
                   RepeatUD5.Value = repeat;
+                  DynamPwrBox5.Checked = dynPwr;
                   comboCount++;
                   break;
 
@@ -98,6 +104,7 @@ namespace GenGcode
                   SpeedUD6.Value = speed;
                   PowerUD6.Value = power;
                   RepeatUD6.Value = repeat;
+                  DynamPwrBox6.Checked = dynPwr;
                   comboCount++;
                   break;
 
@@ -107,6 +114,7 @@ namespace GenGcode
                   SpeedUD7.Value = speed;
                   PowerUD7.Value = power;
                   RepeatUD7.Value = repeat;
+                  DynamPwrBox7.Checked = dynPwr;
                   comboCount++;
                   break;
 
@@ -116,6 +124,7 @@ namespace GenGcode
                   SpeedUD8.Value = speed;
                   PowerUD8.Value = power;
                   RepeatUD8.Value = repeat;
+                  DynamPwrBox8.Checked = dynPwr;
                   comboCount++;
                   break;
 
@@ -128,7 +137,7 @@ namespace GenGcode
 
       }
 
-      public static void DecodeProp(KeyValuePair<string, string> prop, out string layerName, out int speed, out int power, out int repeat)
+      public static void DecodeProp(KeyValuePair<string, string> prop, out string layerName, out int speed, out int power, out int repeat, out bool dynPwr)
       {
          var values = prop.Value.Split(';');
 
@@ -136,6 +145,7 @@ namespace GenGcode
          speed = Convert.ToInt32(values[1]);
          power = Convert.ToInt32(values[2]);
          repeat = Convert.ToInt32(values[3]);
+         dynPwr = Convert.ToBoolean(values[4]);
       }
 
       private void InfoBtn_Click(object sender, EventArgs e)
@@ -157,14 +167,14 @@ namespace GenGcode
 
          void CombinePropStrings()
          {
-            engraveProp1 = $"{comboBox1.Text};{SpeedUD1.Value};{PowerUD1.Value};{RepeatUD1.Value}";
-            engraveProp2 = $"{comboBox2.Text};{SpeedUD2.Value};{PowerUD2.Value};{RepeatUD2.Value}";
-            engraveProp3 = $"{comboBox3.Text};{SpeedUD3.Value};{PowerUD3.Value};{RepeatUD3.Value}";
-            engraveProp4 = $"{comboBox4.Text};{SpeedUD4.Value};{PowerUD4.Value};{RepeatUD4.Value}";
-            engraveProp5 = $"{comboBox5.Text};{SpeedUD5.Value};{PowerUD5.Value};{RepeatUD5.Value}";
-            engraveProp6 = $"{comboBox6.Text};{SpeedUD6.Value};{PowerUD6.Value};{RepeatUD6.Value}";
-            engraveProp7 = $"{comboBox7.Text};{SpeedUD7.Value};{PowerUD7.Value};{RepeatUD7.Value}";
-            engraveProp8 = $"{comboBox8.Text};{SpeedUD8.Value};{PowerUD8.Value};{RepeatUD8.Value}";
+            engraveProp1 = $"{comboBox1.Text};{SpeedUD1.Value};{PowerUD1.Value};{RepeatUD1.Value};{DynamPwrBox1.Checked}";
+            engraveProp2 = $"{comboBox2.Text};{SpeedUD2.Value};{PowerUD2.Value};{RepeatUD2.Value};{DynamPwrBox2.Checked}";
+            engraveProp3 = $"{comboBox3.Text};{SpeedUD3.Value};{PowerUD3.Value};{RepeatUD3.Value};{DynamPwrBox3.Checked}";
+            engraveProp4 = $"{comboBox4.Text};{SpeedUD4.Value};{PowerUD4.Value};{RepeatUD4.Value};{DynamPwrBox4.Checked}";
+            engraveProp5 = $"{comboBox5.Text};{SpeedUD5.Value};{PowerUD5.Value};{RepeatUD5.Value};{DynamPwrBox5.Checked}";
+            engraveProp6 = $"{comboBox6.Text};{SpeedUD6.Value};{PowerUD6.Value};{RepeatUD6.Value};{DynamPwrBox6.Checked}";
+            engraveProp7 = $"{comboBox7.Text};{SpeedUD7.Value};{PowerUD7.Value};{RepeatUD7.Value};{DynamPwrBox7.Checked}";
+            engraveProp8 = $"{comboBox8.Text};{SpeedUD8.Value};{PowerUD8.Value};{RepeatUD8.Value};{DynamPwrBox8.Checked}";
          }
 
          void SaveToCustomProp()
