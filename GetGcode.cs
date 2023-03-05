@@ -48,7 +48,11 @@ namespace GenGcode
                }
             }
 
+
+
             var entryByLayerDict = EntryByLayer(tr, elements);
+
+            if (entryByLayerDict == null) return;
 
             props = ChkContainsLayer(db, props, entryByLayerDict);
 
@@ -73,9 +77,9 @@ namespace GenGcode
 
                List<Circle> optimtzedCircles = GetOpitmtzedCircles(ref circles);
 
-               ReadLayerParams(out speed, out power, out repeat,out dynPwr,  prop.Value);
+               ReadLayerParams(out speed, out power, out repeat, out dynPwr, prop.Value);
 
-               GetLayerGcode(gcode, speed, power, repeat, layerName,dynPwr, optimizedPolylines,
+               GetLayerGcode(gcode, speed, power, repeat, layerName, dynPwr, optimizedPolylines,
                            optimizedLines, optimizedArcs, optimtzedCircles,
                            _passByEntity, tr);
             }
@@ -114,12 +118,42 @@ namespace GenGcode
          {
             entities.Add((Entity)tr.GetObject(id, OpenMode.ForRead));
          }
+
+
+
+       if( ! CheckEntites()) return null;
+
          return entities.Where(x => x.GetType() == typeof(Polyline)
                               || x.GetType() == typeof(Line)
                               || x.GetType() == typeof(Circle)
                               || x.GetType() == typeof(Arc))
                         .GroupBy(o => o.Layer)
                         .ToDictionary(g => g.Key, g => g.ToList());
+
+         bool CheckEntites()
+         {
+            var wrongElement = entities.Where(x => x.GetType() == typeof(DBText)
+                     || x.GetType() == typeof(Polyline2d)).FirstOrDefault();
+            if (wrongElement != null &&
+               MessageBox.Show($"Found text or Polyline2d. Please, break them before get gcode. Continue?",
+                                    "Waring", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
+            {
+                return false;
+               
+            }
+
+            var wrongLayerColor = entities.Where(x => x.EntityColor.IsByLayer == false).FirstOrDefault();
+
+            if (wrongElement != null &&
+               MessageBox.Show($"Found layer, wich colour is not ByLayer. Continue?",
+                                   "Waring", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
+            {
+
+               return false;
+            }
+
+            return true;
+         }
       }
 
       private SortedDictionary<string, string> ChkContainsLayer(Database db, SortedDictionary<string, string> props, Dictionary<string, List<Entity>> entryByLayerDict)
@@ -130,6 +164,7 @@ namespace GenGcode
 
             if (!propLayers.Contains(layer))
             {
+               MessageBox.Show($"Layer {layer} doesn't setup. Please, configurate it");
                using (GenGcode.SettingsForm setGcodeForm = new GenGcode.SettingsForm())
                {
                   setGcodeForm.ShowDialog();
@@ -283,9 +318,9 @@ namespace GenGcode
          return optimtzedCircles;
       }
 
-      private static void GetLayerGcode(List<string> gcode, int speed, int power, int repeat, string layerName,bool dynPwr, 
+      private static void GetLayerGcode(List<string> gcode, int speed, int power, int repeat, string layerName, bool dynPwr,
                                         List<Polyline> optimizedPolylines, List<Line> optimizedlines, List<Arc> optimizedArcs,
-                                        List<Circle> optimtzedCircles, bool repeatEachEntity,Transaction tr)
+                                        List<Circle> optimtzedCircles, bool repeatEachEntity, Transaction tr)
       {
          List<string> output = new List<string>();
 
@@ -296,7 +331,7 @@ namespace GenGcode
                for (int i = 0; i < repeat; i++)
                {
                   output.Add($";Polyline ID: {polyline.Id}, Layer  {layerName}, pass {i + 1}");
-                  output.AddRange(GetEntityGcode(polyline, speed, power * 10,dynPwr));
+                  output.AddRange(GetEntityGcode(polyline, speed, power * 10, dynPwr));
                   var poly = tr.GetObject(polyline.Id, OpenMode.ForWrite) as Polyline;
                   poly.ReverseCurve();
                }
@@ -307,7 +342,7 @@ namespace GenGcode
                for (int i = 0; i < repeat; i++)
                {
                   output.Add($";Line ID: {line.Id}, Layer  {layerName}, pass {i + 1}");
-                  output.AddRange(GetEntityGcode(line, speed, power * 10,dynPwr));
+                  output.AddRange(GetEntityGcode(line, speed, power * 10, dynPwr));
                   var gotline = tr.GetObject(line.Id, OpenMode.ForWrite) as Line;
                   gotline.ReverseCurve();
                }
@@ -319,7 +354,7 @@ namespace GenGcode
                for (int i = 0; i < repeat; i++)
                {
                   output.Add($";Circle ID: {arc.Id}, Layer  {layerName}, pass {i + 1}");
-                  output.AddRange(GetEntityGcode(arc, speed, power * 10,dynPwr));
+                  output.AddRange(GetEntityGcode(arc, speed, power * 10, dynPwr));
                   var gotArc = tr.GetObject(arc.Id, OpenMode.ForWrite) as Arc;
                   gotArc.ReverseCurve();
                }
@@ -330,7 +365,7 @@ namespace GenGcode
                for (int i = 0; i < repeat; i++)
                {
                   output.Add($";Circle ID: {circle.Id}, Layer  {layerName}, pass {i + 1}");
-                  output.AddRange(GetEntityGcode(circle, speed, power * 10,dynPwr));
+                  output.AddRange(GetEntityGcode(circle, speed, power * 10, dynPwr));
                }
             }
 
@@ -339,7 +374,7 @@ namespace GenGcode
                for (int i = 0; i < repeat; i++)
                {
                   output.Add($";Circle ID: {circle.Id}, Layer  {layerName}, pass {i + 1}");
-                  output.AddRange(GetEntityGcode(circle, speed, power * 10,dynPwr));
+                  output.AddRange(GetEntityGcode(circle, speed, power * 10, dynPwr));
                }
             }
 
@@ -352,20 +387,20 @@ namespace GenGcode
                foreach (var polyline in optimizedPolylines)
                {
                   output.Add($";Polyline ID: {polyline.Id}, Layer  {layerName}, pass {i + 1}");
-                  output.AddRange(GetEntityGcode(polyline, speed, power * 10,dynPwr));
+                  output.AddRange(GetEntityGcode(polyline, speed, power * 10, dynPwr));
                }
 
                foreach (var line in optimizedlines)
                {
                   output.Add($";Line ID: {line.Id}, Layer  {layerName}, pass {i + 1}");
-                  output.AddRange(GetEntityGcode(line, speed, power * 10,dynPwr));
+                  output.AddRange(GetEntityGcode(line, speed, power * 10, dynPwr));
 
                }
 
                foreach (var arc in optimizedArcs)
                {
                   output.Add($";Line ID: {arc.Id}, Layer  {layerName}, pass {i + 1}");
-                  output.AddRange(GetEntityGcode(arc, speed, power * 10,dynPwr));
+                  output.AddRange(GetEntityGcode(arc, speed, power * 10, dynPwr));
 
                }
 
@@ -389,7 +424,7 @@ namespace GenGcode
          return sel?.GetObjectIds()?.ToList();
       }
 
-      public static bool ReadLayerParams(out int speed, out int power, out int repeat,out bool dynPwr, string prop)
+      public static bool ReadLayerParams(out int speed, out int power, out int repeat, out bool dynPwr, string prop)
       {
          var values = prop.Split(';');
 
@@ -402,28 +437,14 @@ namespace GenGcode
 
       private static void SaveGcode(List<string> gcode, bool selected)
       {
-         string suffix = selected ? "_Selected" : "_All";
-         Document doc = Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
-         string drawingName = System.IO.Path.GetFileName(doc.Name).Split('.')[0];
+         string outFileName = selected ? "Selected" : "All";
 
-         string outFileName = "";
 
-         foreach (char letter in drawingName)
-         {
-            if (((int)letter < 128 && (int)letter > 175) || ((int)letter < 224 && (int)letter > 240))
-            {
-               outFileName += letter;
-            }
-            else
-            {
-               outFileName += 'x';
-            }
-         }
 
          SaveFileDialog saveFileDialog = new SaveFileDialog();
          saveFileDialog.Filter = "GCODE files(*.nc)|*.nc|All files(*.*)|*.*";
 
-         saveFileDialog.FileName = outFileName + suffix + ".nc";
+         saveFileDialog.FileName = outFileName + ".nc";
          if (saveFileDialog.ShowDialog() == DialogResult.Cancel)
             return;
 
@@ -449,7 +470,7 @@ namespace GenGcode
       }
       private static List<string> GetEntityGcode(Polyline polyline, int speed, int power, bool dynPwr)
       {
-         Gcode polyGCode = new Gcode(speed, power,dynPwr);
+         Gcode polyGCode = new Gcode(speed, power, dynPwr);
 
          int segmentsCount = polyline.Closed ? polyline.NumberOfVertices : polyline.NumberOfVertices - 1;
 
@@ -471,13 +492,13 @@ namespace GenGcode
       }
       private static List<string> GetEntityGcode(Line line, int speed, int power, bool dynPwr)
       {
-         Gcode polyGCode = new Gcode(speed, power,dynPwr);
+         Gcode polyGCode = new Gcode(speed, power, dynPwr);
          polyGCode.addLine(line);
          return polyGCode.OutGcode;
       }
 
 
-      private static List<string> GetEntityGcode(Arc arc, int speed, int power,bool dynPwr)
+      private static List<string> GetEntityGcode(Arc arc, int speed, int power, bool dynPwr)
       {
          Gcode polyGCode = new Gcode(speed, power, dynPwr);
          polyGCode.addArc(arc);
@@ -486,7 +507,7 @@ namespace GenGcode
 
 
 
-      private static List<string> GetEntityGcode(Circle circle, int speed, int power,bool dynPwr)
+      private static List<string> GetEntityGcode(Circle circle, int speed, int power, bool dynPwr)
       {
          Gcode circleGcode = new Gcode(speed, power, dynPwr);
 
